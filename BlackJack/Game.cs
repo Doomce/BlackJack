@@ -32,7 +32,7 @@ namespace BlackJack
     internal class Game
     {
         private const int BLACKJACK = 21;
-        CardsActions CA = new CardsActions();
+        private CardsActions CA = new CardsActions();
         private Zaidejas dyleris = new Zaidejas();
         private Zaidejas konsole = new Zaidejas();
 
@@ -74,21 +74,13 @@ namespace BlackJack
             int dekas = new Random().Next(CA.dekai.Count);
             for (int i = 0; i<2; i++)
             {
-                
-                Debug.WriteLine("Dekas: " + (dekas+1) + "; Zaidejas gauna: " + CA.dekai[dekas][1].name() + "; Dyleris gauna: " + CA.dekai[dekas][0].name());
-                konsole.kortos.Add((BJCard)CA.dekai[dekas][0]);
-                CA.dekai[dekas].RemoveAt(0);
-                dyleris.kortos.Add((BJCard)CA.dekai[dekas][0]);
-                CA.dekai[dekas].RemoveAt(0);
+                paimtiKorta(dekas, ZaidTipas.KONSOLE);
+                paimtiKorta(dekas, ZaidTipas.DYLERIS);
             }
 
-
-            //Console.WriteLine(String.Join(", ", zaidejo.Select(korta => korta.name()).ToArray()));
-            //Console.WriteLine(String.Join(", ", dylerio.Select(korta => korta.name()).ToArray()));
             konsole.taskai = taskuSkaiciavimas(ZaidTipas.KONSOLE);
             dyleris.taskai = taskuSkaiciavimas(ZaidTipas.DYLERIS);
-            KortuIsvedimas(ZaidTipas.KONSOLE, false);
-            KortuIsvedimas(ZaidTipas.DYLERIS, false);
+            kortuIsvedimas(false);
 
             while (true)
             {
@@ -96,35 +88,30 @@ namespace BlackJack
                 if (konsole.taskai == dyleris.taskai && konsole.paskutinisStatymas)
                 {
                     Console.WriteLine("LYGU");
-                    KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                    KortuIsvedimas(ZaidTipas.DYLERIS, true);
+                    kortuIsvedimas(true);
                     break;
                 }
                 else if (konsole.taskai == BLACKJACK)
                 {
                     Console.WriteLine("KONSOLE BLACKJACK");
-                    KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                    KortuIsvedimas(ZaidTipas.DYLERIS, true);
+                    kortuIsvedimas(true);
                     break;
                 }
                 else if (dyleris.taskai == BLACKJACK)
                 {
                     Console.WriteLine("DYLERIS BLACKJACK");
-                    KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                    KortuIsvedimas(ZaidTipas.DYLERIS, true);
+                    kortuIsvedimas(true);
                     break;
                 }
                 else if (dyleris.taskai > BLACKJACK)
                 {
                     Console.WriteLine("DYLERIS PRALAIMI");
-                    KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                    KortuIsvedimas(ZaidTipas.DYLERIS, true);
+                    kortuIsvedimas(true);
                     break;
                 }
                 else if (konsole.taskai > BLACKJACK) {
                     Console.WriteLine("TU PRALAIMI");
-                    KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                    KortuIsvedimas(ZaidTipas.DYLERIS, true);
+                    kortuIsvedimas(true);
                     break;
                 }
                 
@@ -141,23 +128,20 @@ namespace BlackJack
                     {
                         paimtiKorta(dekas, ZaidTipas.KONSOLE);
                         konsole.taskai = taskuSkaiciavimas(ZaidTipas.KONSOLE);
-                        KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                        KortuIsvedimas(ZaidTipas.DYLERIS, false);
+                        kortuIsvedimas(false);
                     }
                     continue;
                 }
                 else if (dyleris.taskai > konsole.taskai)
                 {
                     Console.WriteLine("TU PRALAIMI");
-                    KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                    KortuIsvedimas(ZaidTipas.DYLERIS, true);
+                    kortuIsvedimas(true);
                     break;
                 }
                 else if (dyleris.taskai < konsole.taskai && dyleris.paskutinisStatymas)
                 {
                     Console.WriteLine("TU LAIMI");
-                    KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                    KortuIsvedimas(ZaidTipas.DYLERIS, true);
+                    kortuIsvedimas(true);
                     break;
                 }
                 else if (dyleris.taskai < BLACKJACK && konsole.paskutinisStatymas)
@@ -165,14 +149,9 @@ namespace BlackJack
                     paimtiKorta(dekas, ZaidTipas.DYLERIS);
                     dyleris.taskai = taskuSkaiciavimas(ZaidTipas.DYLERIS);
                     if (dyleris.taskai >= 20) dyleris.paskutinisStatymas = true;
-                    KortuIsvedimas(ZaidTipas.KONSOLE, false);
-                    KortuIsvedimas(ZaidTipas.DYLERIS, true);
+                    kortuIsvedimas(true);
                     continue;
                 }
-                
-
-
-
                 break;
             }
 
@@ -210,7 +189,14 @@ namespace BlackJack
             return points;
         }
 
-        void KortuIsvedimas(ZaidTipas zaidejas, bool paskutinisEjimas)
+
+        private void kortuIsvedimas(bool paskutinisEjimas)
+        {
+            Isvedimas(ZaidTipas.KONSOLE, false);
+            Isvedimas(ZaidTipas.DYLERIS, paskutinisEjimas);
+        }
+
+        private void Isvedimas(ZaidTipas zaidejas, bool paskutinisEjimas)
         {
             int points;
             if (zaidejas == ZaidTipas.KONSOLE)
@@ -235,6 +221,8 @@ namespace BlackJack
 
         private int kortosVerte(BJCard korta, int points, int indeksas, int maxIndeksas)
         {
+            //Skaiciuoti pagal A kortos pozicija ar ne????????
+
             try
             {
                 return korta.value();
@@ -246,7 +234,7 @@ namespace BlackJack
         }
 
 
-        private static void print(List<BJCard> cards)
+        private static void debugPrint(List<BJCard> cards)
         {
             foreach (var card in cards)
             {
