@@ -27,8 +27,6 @@ namespace BlackJack
         }
     }
 
-
-
     internal class Game
     {
         private const int BLACKJACK = 21;
@@ -45,7 +43,7 @@ namespace BlackJack
                 try
                 {
                     sk = Int16.Parse(key.ToString());
-                    if (sk < 0 || sk > 8)
+                    if (sk < 1 || sk > 8)
                     {
                         throw new FormatException();
                     }
@@ -57,25 +55,18 @@ namespace BlackJack
                 break;
             }
 
-            
             CA.init(sk);
 
-            for (int i = 0; i < sk; i++)
-            {
-                Debug.Write((i+1)+" DEKAS: ");
-                CA.dekai[i].ForEach((card) => Debug.Write(card.name() + " "));
-                Debug.Write("\n");
-            }
             startas();
         }
 
         void startas()
         {
-            int dekas = new Random().Next(CA.dekai.Count);
+            int kalade = new Random().Next(CA.dekai.Count);
             for (int i = 0; i<2; i++)
             {
-                paimtiKorta(dekas, ZaidTipas.KONSOLE);
-                paimtiKorta(dekas, ZaidTipas.DYLERIS);
+                paimtiKorta(ZaidTipas.KONSOLE);
+                paimtiKorta(ZaidTipas.DYLERIS);
             }
 
             konsole.taskai = taskuSkaiciavimas(ZaidTipas.KONSOLE);
@@ -85,7 +76,7 @@ namespace BlackJack
             while (true)
             {
                 Console.WriteLine("");
-                if (konsole.taskai == dyleris.taskai && konsole.paskutinisStatymas)
+                if (konsole.taskai == dyleris.taskai && konsole.paskutinisStatymas && dyleris.paskutinisStatymas)
                 {
                     Console.WriteLine("LYGU");
                     kortuIsvedimas(true);
@@ -93,28 +84,27 @@ namespace BlackJack
                 }
                 else if (konsole.taskai == BLACKJACK)
                 {
-                    Console.WriteLine("KONSOLE BLACKJACK");
+                    Console.WriteLine("KONSOLE BLACKJACK - LAIMI");
                     kortuIsvedimas(true);
                     break;
                 }
                 else if (dyleris.taskai == BLACKJACK)
                 {
-                    Console.WriteLine("DYLERIS BLACKJACK");
+                    Console.WriteLine("DYLERIS BLACKJACK - LAIMI");
                     kortuIsvedimas(true);
                     break;
                 }
                 else if (dyleris.taskai > BLACKJACK)
                 {
-                    Console.WriteLine("DYLERIS PRALAIMI");
+                    Console.WriteLine("TU LAIMI");
                     kortuIsvedimas(true);
                     break;
                 }
                 else if (konsole.taskai > BLACKJACK) {
-                    Console.WriteLine("TU PRALAIMI");
+                    Console.WriteLine("DYLERIS LAIMI");
                     kortuIsvedimas(true);
                     break;
-                }
-                
+                }       
                 else if (!konsole.paskutinisStatymas)
                 {
                     Console.WriteLine("H - imti kortą;  S- Praleisti");
@@ -126,7 +116,7 @@ namespace BlackJack
                     }
                     else if (ivestis.Equals('h'))
                     {
-                        paimtiKorta(dekas, ZaidTipas.KONSOLE);
+                        paimtiKorta(ZaidTipas.KONSOLE);
                         konsole.taskai = taskuSkaiciavimas(ZaidTipas.KONSOLE);
                         kortuIsvedimas(false);
                     }
@@ -134,7 +124,7 @@ namespace BlackJack
                 }
                 else if (dyleris.taskai > konsole.taskai)
                 {
-                    Console.WriteLine("TU PRALAIMI");
+                    Console.WriteLine("DYLERIS LAIMI");
                     kortuIsvedimas(true);
                     break;
                 }
@@ -146,9 +136,9 @@ namespace BlackJack
                 }
                 else if (dyleris.taskai < BLACKJACK && konsole.paskutinisStatymas)
                 {
-                    paimtiKorta(dekas, ZaidTipas.DYLERIS);
+                    paimtiKorta(ZaidTipas.DYLERIS);
                     dyleris.taskai = taskuSkaiciavimas(ZaidTipas.DYLERIS);
-                    if (dyleris.taskai >= 20) dyleris.paskutinisStatymas = true;
+                    if (dyleris.taskai > 17) dyleris.paskutinisStatymas = true;
                     kortuIsvedimas(true);
                     continue;
                 }
@@ -157,18 +147,19 @@ namespace BlackJack
 
         }
 
-        void paimtiKorta(int dekas, ZaidTipas zaidejas)
+        void paimtiKorta(ZaidTipas zaidejas)
         {
+            int kalade = new Random().Next(CA.dekai.Count);
             if (zaidejas == ZaidTipas.KONSOLE)
             {
-                Debug.WriteLine("Dekas: " + (dekas + 1) + "; Zaidejas gauna: " + CA.dekai[dekas][0].name() + ";");
-                konsole.kortos.Add((BJCard)CA.dekai[dekas][0]);
+                Debug.WriteLine("Dekas: " + (kalade + 1) + "; Zaidejas gauna: " + CA.dekai[kalade][0].name() + ";");
+                konsole.kortos.Add((BJCard)CA.dekai[kalade][0]);
             } else
             {
-                Debug.WriteLine("Dekas: " + (dekas + 1) + "; Dyleris gauna: " + CA.dekai[dekas][0].name() + ";");
-                dyleris.kortos.Add((BJCard)CA.dekai[dekas][0]);
+                Debug.WriteLine("Dekas: " + (kalade + 1) + "; Dyleris gauna: " + CA.dekai[kalade][0].name() + ";");
+                dyleris.kortos.Add((BJCard)CA.dekai[kalade][0]);
             }
-            CA.dekai[dekas].RemoveAt(0);
+            CA.dekai[kalade].RemoveAt(0);
         }
 
         private int taskuSkaiciavimas(ZaidTipas zaidejas)

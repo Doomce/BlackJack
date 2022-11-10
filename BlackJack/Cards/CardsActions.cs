@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -16,6 +17,9 @@ namespace BlackJack.Cards
             for (int i = 0; i < dekuKiekis; i++)
             {
                 dekai.Add(padarytiDeka());
+                Debug.Write((i + 1) + " DEKAS: ");
+                dekai[i].ForEach((card) => Debug.Write(card.name() + " "));
+                Debug.Write("\n");
             } 
         }
 

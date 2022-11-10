@@ -20,7 +20,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -38,7 +38,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -56,7 +56,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -74,7 +74,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -92,7 +92,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -110,7 +110,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -128,7 +128,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -146,7 +146,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -164,7 +164,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -182,7 +182,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -200,7 +200,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -218,7 +218,7 @@ namespace BlackJack.Cards
 
         public int value(int count)
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 
@@ -231,7 +231,7 @@ namespace BlackJack.Cards
 
         public int value()
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
 
         public int value(int count)
